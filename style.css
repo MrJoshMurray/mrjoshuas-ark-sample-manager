@@ -12,6 +12,9 @@ button { padding: .65rem 1.1rem; border: 0; border-radius: 6px; background: #e0a
 button.secondary { background: #3a4050; color: #e6e6e6; }
 button.primary { width: 100%; margin-top: .5rem; padding: .9rem; }
 button:disabled { opacity: .45; cursor: not-allowed; }
+button.busy:disabled { opacity: .85; cursor: progress; }
+button.busy::before { content: ""; display: inline-block; width: .9em; height: .9em; margin-right: .5em; vertical-align: -.1em; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
 .row { display: flex; gap: .6rem; flex-wrap: wrap; align-items: center; }
 .indent { margin: .3rem 0 .8rem 1.6rem; }
 label.radio { display: block; margin: .5rem 0; }

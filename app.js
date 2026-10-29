@@ -31,6 +31,16 @@
     $("destRow").hidden = !toFolder;
     $("destInfo").textContent = destHandle ? destHandle.name : "No folder chosen";
     $("go").disabled = busy || !haveSrc || (toFolder && !$("dry").checked && !destHandle);
+    $("go").classList.toggle("busy", busy);
+    $("go").textContent = busy ? "Working..." : "Build sample pack";
+  }
+
+  // frac null shows an animated bar for work of unknown length.
+  function progress(frac, text) {
+    const bar = $("bar");
+    bar.hidden = false;
+    if (frac == null) bar.removeAttribute("value"); else bar.value = frac;
+    $("status").textContent = frac == null ? text : `${text} (${Math.round(frac * 100)}%)`;
   }
 
   function fail(e) {
@@ -85,13 +95,14 @@
         if (path !== skipPath) await walk(h, path + "/", out, skipPath, onCount);
       } else if (/\.wav$/i.test(name)) {
         try { out.push({ path, file: await h.getFile() }); } catch (e) { /* unreadable file */ }
-        if (out.length % 200 === 0) onCount(out.length);
+        if (out.length % 25 === 0) onCount(out.length);
       }
     }
   }
 
   async function collect(toFolder) {
-    const status = (n) => ($("status").textContent = `Scanning folders... ${n} WAV files found`);
+    const status = (n) => progress(null, `Scanning folders... ${n} WAV files found`);
+    status(0);
     if (srcPicked) {
       return srcPicked.filter((x) => /\.wav$/i.test(x.path) && !x.path.split("/").some((s) => s.startsWith(".") || s === "__MACOSX"));
     }
@@ -115,7 +126,8 @@
   async function run() {
     busy = true; refresh();
     $("error").textContent = ""; $("results").textContent = "";
-    $("bar").hidden = false; $("bar").value = 0;
+    $("bar").hidden = false; $("bar").removeAttribute("value");
+    $("status").scrollIntoView({ behavior: "smooth", block: "nearest" });
     try {
       const dry = $("dry").checked, toFolder = $("outFolder").checked;
       const perFolder = Math.max(1, Math.min(1000, parseInt($("perFolder").value, 10) || 10));
@@ -127,22 +139,23 @@
 
       const files = await collect(toFolder);
       const cands = {};
+      progress(null, `Found ${files.length} WAV files. Sorting...`);
       for (const b in BANKS) cands[b] = [];
       for (const x of files) {
         const b = classify(x.path, x.file.size);
         if (b) cands[b].push(x);
       }
-      $("status").textContent = `Found ${files.length} WAV files. Checking formats...`;
+      progress(null, `Found ${files.length} WAV files. Checking formats...`);
 
       let wavRoot = null;
       if (toFolder && !dry) wavRoot = await subDir(destHandle, "WAV", true);
       else if (toFolder && destHandle) wavRoot = await subDir(destHandle, "WAV", false);
 
       const seen = new Set(), plan = {}, summary = [];
+      const chk = dry ? 1 : 0.4; // share of the bar used by format checking; the rest is copying
       let bi = 0;
       for (const b in BANKS) {
-        $("bar").value = bi++ / 8;
-        $("status").textContent = `Checking bank ${b}: ${BANKS[b]}...`;
+        progress((bi / 8) * chk, `Checking bank ${b} of 8: ${BANKS[b]}`);
         const taken = new Set();
         let existing = 0;
         const bankDir = wavRoot && (await subDir(wavRoot, b, false));
@@ -175,7 +188,10 @@
           chunk.forEach((o, k) => {
             if (good[k] && chosen.length < want && !seen.has(o.key)) { seen.add(o.key); chosen.push(o.x); }
           });
+          progress(((bi + Math.min(1, chosen.length / Math.max(1, want))) / 8) * chk,
+            `Checking bank ${b} of 8: ${BANKS[b]}, ${chosen.length} of ${want} chosen`);
         }
+        bi++;
         chosen.sort((p, q) => (p.path < q.path ? -1 : 1));
         plan[b] = chosen.map((x) => {
           const stem = cleanStem(x.path);
@@ -191,11 +207,11 @@
       }
 
       if (!dry) {
-        $("status").textContent = toFolder ? "Copying files..." : "Building ZIP...";
+        progress(chk, toFolder ? "Copying files" : "Building ZIP");
         if (toFolder) await writeFolder(wavRoot, plan);
         else await downloadZip(plan);
       }
-      $("bar").value = 1;
+      progress(1, "Finished");
       $("status").textContent = dry
         ? "Preview complete. Nothing was copied."
         : toFolder ? `Done. The WAV folder is in "${destHandle.name}". Copy it to the root of your ARK SD card if it isn't there already.`
@@ -216,7 +232,8 @@
       const dir = await wavRoot.getDirectoryHandle(b, { create: true });
       for (const { name, file } of plan[b]) {
         await writeBlob(dir, name, file);
-        $("bar").value = ++done / Math.max(1, total);
+        done++;
+        progress(0.4 + 0.6 * (done / Math.max(1, total)), `Copying file ${done} of ${total}`);
       }
     }
   }
@@ -232,7 +249,7 @@
     for (const b in BANKS) {
       for (const { name, file } of plan[b]) entries.push({ path: `WAV/${b}/${name}`, blob: file });
     }
-    const zip = await Zip.build(entries, (i, n) => ($("bar").value = i / n));
+    const zip = await Zip.build(entries, (i, n) => progress(0.4 + 0.6 * (i / n), `Building ZIP: file ${i} of ${n}`));
     const a = document.createElement("a");
     a.href = URL.createObjectURL(zip);
     a.download = "WAV.zip";
