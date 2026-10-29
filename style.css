@@ -19,6 +19,7 @@ button.busy::before { content: ""; display: inline-block; width: .9em; height: .
 .row { display: flex; gap: .6rem; flex-wrap: wrap; align-items: center; }
 .indent { margin: .3rem 0 .8rem 1.6rem; }
 label.radio { display: block; margin: .5rem 0; }
+label.radio.disabled { color: #6b7385; }
 label.field { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin: .8rem 0; }
 input[type=number], input[type=text] { padding: .45rem; background: #222630; color: inherit; border: 1px solid #3a4050; border-radius: 4px; font-size: 1rem; }
 input[type=number] { width: 5.5rem; }
