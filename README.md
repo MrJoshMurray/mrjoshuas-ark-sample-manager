@@ -10,6 +10,8 @@ Everything runs in your web browser. Nothing is uploaded, nothing is installed, 
 
 **How it chooses:** files are sorted by looking for words like "kick", "snare", "hat" or "pad" in the file name and its folder names, plus file size to tell short one-shots from long loops and textures. The app can't hear the audio, so a few files may land in the wrong bank.
 
+**Keeping it varied:** it skips duplicate copies of the same file (same name and size) and takes only a limited number from any one folder, so no single sample pack takes over a bank. It can't hear the audio, so it won't catch samples that merely sound alike.
+
 ## Quick start
 
 1. Keep all the files in this folder together.
