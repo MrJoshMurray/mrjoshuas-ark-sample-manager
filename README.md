@@ -65,7 +65,7 @@ It does **not** convert audio. If you have 24-bit or 48 kHz samples you want to 
 ## Good to know
 
 - **Sorting is by file and folder names.** It looks for words like "kick", "snare" or "pad" and uses the file size to tell one-shots from loops. A few samples will end up in the wrong bank, so give each bank a listen.
-- **Results are repeatable.** Running it again on the same library gives the same selection.
+- **Shuffle.** Each run picks a different mix from your library, like an old iPod shuffle, so you can keep re-running until you like the result. Untick **Shuffle** to get exactly the same selection every time.
 - **Cloud libraries.** If your samples live in iCloud, OneDrive or similar and aren't downloaded, your computer will fetch them as the app reads them, which can take a while.
 - **ZIP size limit.** A ZIP can't be bigger than 4 GB. If you hit this, lower the per-bank counts or save to a folder instead.
 

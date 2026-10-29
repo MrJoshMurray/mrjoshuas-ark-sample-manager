@@ -136,7 +136,7 @@
       for (const b in BANKS) {
         targets[b] = Math.max(0, Math.min(BANK_SIZE, parseInt($("t" + b).value, 10) || 0));
       }
-      const rng = makeRng(1);
+      const rng = makeRng($("shuffle").checked ? crypto.getRandomValues(new Uint32Array(1))[0] : 1);
 
       const files = await collect(toFolder);
       const cands = {};
