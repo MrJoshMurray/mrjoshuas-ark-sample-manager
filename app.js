@@ -19,6 +19,8 @@
   }
 
   $("outFolder").disabled = !canPickDir;
+  $("pickDest").disabled = !canPickDir;
+  $("outFolder").parentElement.append(canPickDir ? "" : " (not available in this browser)");
   $("outFolder").checked = canPickDir;
   $("outZip").checked = !canPickDir;
   $("capNote").textContent = canPickDir
