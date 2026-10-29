@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MrJoshua's ARK Sample Manager</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <h1>MrJoshua's ARK Sample Manager</h1>
+  <p class="muted">Finds 16-bit 44.1 kHz WAVs in your sample library and sorts them into the eight ARK banks (<code>WAV/1</code> to <code>WAV/8</code>). Everything runs in your browser. Nothing is uploaded and your originals are never changed.</p>
+
+  <section>
+    <h2>1. Your samples</h2>
+    <div class="row">
+      <button id="pickSrc">Choose sample folder</button>
+      <button id="pickFiles" class="secondary">Or choose WAV files</button>
+    </div>
+    <p id="srcInfo" class="muted">Nothing chosen yet. Subfolders are searched too.</p>
+    <input type="file" id="srcDirInput" webkitdirectory multiple hidden>
+    <input type="file" id="srcFilesInput" accept=".wav,audio/wav,audio/x-wav" multiple hidden>
+  </section>
+
+  <section>
+    <h2>2. Where to put the pack</h2>
+    <label class="radio"><input type="radio" name="out" value="folder" id="outFolder"> Save into a folder (for example the ARK SD card)</label>
+    <div class="row indent" id="destRow">
+      <button id="pickDest" class="secondary">Choose destination folder</button>
+      <span id="destInfo" class="muted"></span>
+    </div>
+    <label class="radio"><input type="radio" name="out" value="zip" id="outZip"> Download as <code>WAV.zip</code>, then unzip it onto the SD card</label>
+    <p id="capNote" class="muted"></p>
+  </section>
+
+  <section>
+    <h2>3. Banks</h2>
+    <table id="bankTable">
+      <thead><tr><th>Bank</th><th>Samples (max 128)</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <label class="field">Max samples taken from any one folder, per bank
+      <input type="number" id="perFolder" min="1" max="1000" value="10">
+    </label>
+    <label class="radio"><input type="checkbox" id="dry"> Preview only (copy nothing)</label>
+  </section>
+
+  <button id="go" class="primary" disabled>Build sample pack</button>
+  <progress id="bar" max="1" value="0" hidden></progress>
+  <p id="status" class="muted"></p>
+  <p id="error" class="error"></p>
+  <div id="results"></div>
+  <p class="muted small">ARK needs 16-bit, 44.1 kHz WAVs (mono or stereo) with file names of at most 25 characters. Files are copied as they are, with no conversion.</p>
+</main>
+<script src="rules.js"></script>
+<script src="zip.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

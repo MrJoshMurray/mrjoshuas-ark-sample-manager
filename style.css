@@ -1,0 +1,35 @@
+:root { color-scheme: dark; }
+body { font: 16px system-ui, sans-serif; margin: 0; background: #16181d; color: #e6e6e6; }
+main { max-width: 760px; margin: 0 auto; padding: 1.2rem 1rem 3rem; }
+h1 { font-size: 1.5rem; margin: .4rem 0; }
+h2 { font-size: 1.05rem; margin: 0 0 .6rem; }
+section { background: #1d2028; border: 1px solid #2c3140; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+.muted { color: #9aa3b2; }
+.small { font-size: .85rem; }
+.error { color: #ff7b7b; white-space: pre-wrap; }
+code { background: #0e1014; padding: .05rem .3rem; border-radius: 3px; }
+button { padding: .65rem 1.1rem; border: 0; border-radius: 6px; background: #e0a030; color: #111; font-weight: 600; font-size: 1rem; cursor: pointer; }
+button.secondary { background: #3a4050; color: #e6e6e6; }
+button.primary { width: 100%; margin-top: .5rem; padding: .9rem; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+.row { display: flex; gap: .6rem; flex-wrap: wrap; align-items: center; }
+.indent { margin: .3rem 0 .8rem 1.6rem; }
+label.radio { display: block; margin: .5rem 0; }
+label.field { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin: .8rem 0; }
+input[type=number], input[type=text] { padding: .45rem; background: #222630; color: inherit; border: 1px solid #3a4050; border-radius: 4px; font-size: 1rem; }
+input[type=number] { width: 5.5rem; }
+input[type=text] { width: 8rem; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: .35rem .4rem; border-bottom: 1px solid #2c3140; text-align: left; }
+progress { width: 100%; height: .8rem; margin-top: .8rem; }
+details { margin: .4rem 0; }
+summary { cursor: pointer; }
+details ul { columns: 2; margin: .4rem 0; padding-left: 1.2rem; font-size: .85rem; color: #b8c0cc; }
+td[data-label]::before { content: attr(data-label); display: none; font-size: .75rem; color: #9aa3b2; }
+@media (max-width: 520px) {
+  #bankTable thead { display: none; }
+  #bankTable tr { display: grid; grid-template-columns: 1fr 1fr; gap: .3rem .6rem; padding: .6rem 0; border-bottom: 1px solid #2c3140; }
+  #bankTable td { display: block; border: 0; padding: 0; }
+  #bankTable td:first-child { grid-column: 1 / -1; font-weight: 600; }
+  #bankTable td[data-label]::before { display: block; }
+  #bankTable input { width: 100%; box-sizing: border-box; } details ul { columns: 1; } label.field { flex-direction: column; align-items: flex-start; } }
