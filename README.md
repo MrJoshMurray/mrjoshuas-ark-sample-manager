@@ -10,7 +10,7 @@ Everything runs in your web browser. Nothing is uploaded, nothing is installed, 
 
 **How it chooses:** files are sorted by looking for words like "kick", "snare", "hat" or "pad" in the file name and its folder names, plus file size to tell short one-shots from long loops and textures. The app can't hear the audio, so a few files may land in the wrong bank.
 
-**Keeping it varied:** it skips duplicate copies of the same file (same name and size) and takes only a limited number from any one folder, so no single sample pack takes over a bank. It can't hear the audio, so it won't catch samples that merely sound alike.
+**Keeping it varied:** it skips duplicate copies of the same file and files whose names differ only by a number (`AHH_1`, `AHH_2`, `AHH_3` gives just one), and takes only a limited number from any one folder, so no single sample pack takes over a bank. Longer numbers that are part of a name, like `909`, are kept. It can't hear the audio, so it won't catch samples that merely sound alike under different names. You can allow more similar names per bank in the **Banks** settings.
 
 ## Quick start
 
@@ -33,6 +33,8 @@ If your browser can't pick a whole folder (common on phones and tablets), press 
 Set how many samples you want in each bank (0 to 128). Smaller numbers give a smaller, more selective pack.
 
 **Max samples from any one folder** limits how much any single sample pack can contribute to a bank, which keeps the selection varied.
+
+**Max samples with near-identical names** (default 1) controls how many files whose names differ only by a number can go in a bank. Raise it if you want several variations of each sound.
 
 Tick **Preview only** to see what would be chosen without copying anything.
 

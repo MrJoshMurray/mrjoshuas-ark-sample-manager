@@ -11,7 +11,7 @@
   <h1>MrJoshua's ARK Sample Manager</h1>
   <p class="muted">Finds 16-bit 44.1 kHz WAVs in your sample library and sorts them into the eight ARK banks (<code>WAV/1</code> to <code>WAV/8</code>). Everything runs in your browser. Nothing is uploaded and your originals are never changed.</p>
   <p class="muted">Files are sorted by looking for words like "kick", "snare", "hat" or "pad" in the file name and folder names, and by file size (short files are one-shots, long ones are loops and textures). The app can't hear the audio, so a few files may land in the wrong bank.</p>
-  <p class="muted">To keep the pack varied, it skips duplicate copies of the same file (same name and size) and takes only a limited number from any one folder, so no single sample pack takes over a bank. It can't hear the audio, so it won't catch samples that merely sound alike.</p>
+  <p class="muted">To keep the pack varied, it skips duplicate copies of the same file and files whose names differ only by a number (AHH_1, AHH_2, AHH_3 gives just one), and takes only a limited number from any one folder, so no single sample pack takes over a bank. It can't hear the audio, so it won't catch samples that merely sound alike under different names.</p>
 
   <section>
     <h2>1. Your samples</h2>
@@ -43,6 +43,9 @@
     </table>
     <label class="field">Max samples taken from any one folder, per bank
       <input type="number" id="perFolder" min="1" max="1000" value="10">
+    </label>
+    <label class="field">Max samples with near-identical names (e.g. AHH_1, AHH_2, AHH_3)
+      <input type="number" id="similar" min="1" max="128" value="1">
     </label>
     <label class="radio"><input type="checkbox" id="dry"> Preview only (copy nothing)</label>
   </section>

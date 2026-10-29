@@ -131,6 +131,7 @@
     try {
       const dry = $("dry").checked, toFolder = $("outFolder").checked;
       const perFolder = Math.max(1, Math.min(1000, parseInt($("perFolder").value, 10) || 10));
+      const maxSimilar = Math.max(1, parseInt($("similar").value, 10) || 1);
       const targets = {};
       for (const b in BANKS) {
         targets[b] = Math.max(0, Math.min(BANK_SIZE, parseInt($("t" + b).value, 10) || 0));
@@ -173,7 +174,7 @@
           if (seen.has(key)) continue;
           const dir = x.path.slice(0, x.path.lastIndexOf("/"));
           if (!groups.has(dir)) groups.set(dir, []);
-          groups.get(dir).push({ key, x });
+          groups.get(dir).push({ key, nk: nameKey(x.path), x });
         }
         const glist = [...groups.values()];
         shuffle(glist, rng);
@@ -181,12 +182,16 @@
         const order = [];
         for (let i = 0; i < perFolder; i++) for (const g of glist) if (i < g.length) order.push(g[i]);
 
-        const chosen = [];
+        const chosen = [], sim = new Map();
         for (let i = 0; i < order.length && chosen.length < want; i += 48) {
-          const chunk = order.slice(i, i + 48).filter((o) => !seen.has(o.key));
+          const chunk = order.slice(i, i + 48).filter((o) => !seen.has(o.key) && (sim.get(o.nk) || 0) < maxSimilar);
           const good = await Promise.all(chunk.map((o) => isArkWav(o.x.file)));
           chunk.forEach((o, k) => {
-            if (good[k] && chosen.length < want && !seen.has(o.key)) { seen.add(o.key); chosen.push(o.x); }
+            if (good[k] && chosen.length < want && !seen.has(o.key) && (sim.get(o.nk) || 0) < maxSimilar) {
+              seen.add(o.key);
+              sim.set(o.nk, (sim.get(o.nk) || 0) + 1);
+              chosen.push(o.x);
+            }
           });
           progress(((bi + Math.min(1, chosen.length / Math.max(1, want))) / 8) * chk,
             `Checking bank ${b} of 8: ${BANKS[b]}, ${chosen.length} of ${want} chosen`);

@@ -42,6 +42,19 @@ function classify(rel, size) {
   return null;
 }
 
+// Names that differ only by numbering (AHHH_1, AHHH_2, 03_AHHH) share a key. Longer numbers like 909 are kept.
+function nameKey(path) {
+  const base = path.slice(path.lastIndexOf("/") + 1).replace(/\.[^.]*$/, "").toLowerCase();
+  let k = base.replace(/\(\d+\)/g, " ").replace(/^copy of /, "");
+  let prev;
+  do {
+    prev = k;
+    k = k.replace(/^\d{1,2}[\s_.-]+/, "").replace(/[\s_.-]+\d{1,2}$/, "").replace(/([a-z])\d{1,3}$/, "$1");
+  } while (k !== prev);
+  k = k.replace(/[\s_.()-]+/g, " ").trim();
+  return k || base;
+}
+
 function cleanStem(path) {
   const base = path.slice(path.lastIndexOf("/") + 1).replace(/\.[^.]*$/, "");
   const stem = base.replace(/[^A-Za-z0-9+_-]+/g, "_").replace(/^_+|_+$/g, "").slice(0, MAX_STEM).replace(/_+$/, "");
