@@ -1,5 +1,7 @@
 # MrJoshua's ARK Sample Manager
 
+**Use it online: https://mrjoshmurray.github.io/mrjoshuas-ark-sample-manager/**
+
 Turn a big folder of samples into a ready-to-use sample pack for the Befaco ARK.
 
 It searches your library (including every subfolder), picks out WAVs in the format ARK needs, removes duplicates, sorts them into the eight ARK banks, and puts them in a `WAV` folder ready to copy onto your SD card.

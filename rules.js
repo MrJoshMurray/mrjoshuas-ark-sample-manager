@@ -12,7 +12,7 @@ const BANKS = {
   7: "Bass & Synth Stabs",
   8: "Atmospheres, Pads & Drones",
 };
-const DEFAULT_TARGETS = { 1: 128, 2: 128, 3: 128, 4: 128, 5: 128, 6: 128, 7: 128, 8: 100 };
+const DEFAULT_TARGETS = { 1: 128, 2: 128, 3: 128, 4: 128, 5: 128, 6: 128, 7: 128, 8: 128 };
 
 // [bank, match, [min bytes, max bytes], reject (file name only)]. First match wins.
 const RULES = [
