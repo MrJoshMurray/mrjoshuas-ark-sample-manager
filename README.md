@@ -8,6 +8,8 @@ It searches your library (including every subfolder), picks out WAVs in the form
 
 Everything runs in your web browser. Nothing is uploaded, nothing is installed, and your original files are only copied, never changed or moved.
 
+**How it chooses:** files are sorted by looking for words like "kick", "snare", "hat" or "pad" in the file name and its folder names, plus file size to tell short one-shots from long loops and textures. The app can't hear the audio, so a few files may land in the wrong bank.
+
 ## Quick start
 
 1. Keep all the files in this folder together.
